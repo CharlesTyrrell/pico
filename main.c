@@ -8,72 +8,97 @@ void start();
 void turnOn();
 void turnOff();
 void flushBuffer();
-void getInput();
+void processInput();
 void inputToBuffer(char character);
+void processEvents();
+
 
 char input;
 char top_of_buffer = 0;
 char input_buffer[24];
-/*
-char *commandList[3]= 
-	{"hello",
-	 "why", 
-	 "die",
-	};
-*/
+
 
 int main(){
-    //Initialise I/O
+    
+    { //Initialise I/O
     stdio_init_all(); 
 	
     // initialise GPIO (Green LED connected to pin 25)
     gpio_init(25);
     gpio_set_dir(25, GPIO_OUT);
+	}	
 	
-	
-    //Main Loop 
-    while(1){
-		getInput();
-		charToBuffer();
+    
+    while(1){ //Main Loop 
+		scanf("%c", input);
+		processInput(input);
+			
 		
-		switch(command) {
-			case 'a' :
-				turnOn();
-				break;
-			case 'b' :
-				turnOff();
-				break;
-			default :
-				printf("Invalid command\n" );
-	   }
     }
 }
 
-void getCommand(char *buffer, int inputLength){
-	
-	strcmp (buffer, const char* str2);
-		
+
+/*
+struct _commmand_{
+	char *name;
+}typedef commandStruct
+
+*commandStruct newCommand(char *name)
+{
+  Object* p = malloc(sizeof(Object));
+  p->id = id;
+  p->value = value;
+  return p;
 }
+
+Object* Object_new(int id, int value) { 
+  Object* p = malloc(sizeof(Object));
+  p->id = id;
+  p->value = value;
+  return p;
+}
+
+
+struct _command_ *commandList[]= 
+	{
+		
+	};
 */
+
+
+
+
+void getCommand(char *buffer, int inputLength){	//STUB
+
+	/*
+	for(int = 0; i < sizeof(inputLength); i++)
+		if(strcmp (buffer, commandList[0])){
+				
+		}
+	*/	
+}
+
+
+//--------------------
 //can take a char from any source
-void getInput(char input){
+void processInput(char input){
 	charToBuffer(input);
 	if(input == "\n"){
 		getCommand(input_buffer, top_of_buffer);
 		flushBuffer();
 	}		
 }
-
+//-----------------
 void inputToBuffer(char character){
 	if(top_of_buffer >= sizeof(input_buffer)){
 		flush_buffer();
-		printf("\n");	
+		printf("buffer overflow \n");	
 	}
 	printf("%c", character);
 	input_buffer[top_of_buffer] = character;
 	top_of_buffer++;	
 }
-
+//-------------
 void flushBuffer(){
 	top_of_buffer = 0;
 	
