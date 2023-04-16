@@ -7,6 +7,14 @@ void start();
 
 void turnOn();
 void turnOff();
+void flushBuffer();
+void getInput();
+void inputToBuffer(char character);
+
+char input;
+char top_of_buffer = 0;
+char input_buffer[25];
+
 
 int main(){
     //Initialise I/O
@@ -16,12 +24,12 @@ int main(){
     gpio_init(25);
     gpio_set_dir(25, GPIO_OUT);
 	
-	char command;
+	
     //Main Loop 
     while(1){
-
-		printf("Enter a command \n(a :on, b: off)\n");
-		scanf("%c", &command);
+		getInput();
+		charToBuffer();
+		
 		switch(command) {
 			case 'a' :
 				turnOn();
@@ -34,6 +42,29 @@ int main(){
 	   }
     }
 }
+
+
+
+void getInput(){
+	scanf("%c", &input);
+	charToBuffer(input);
+}
+
+void inputToBuffer(char character){
+	if(top_of_buffer >= sizeof(input_buffer)){
+		flush_buffer();
+		printf("\n");	
+	}
+	printf("%c", character);
+	input_buffer[top_of_buffer] = character;
+	top_of_buffer++;	
+}
+
+void flushBuffer(){
+	top_of_buffer = 0;
+	
+}
+
 
 void turnOn()
 {
