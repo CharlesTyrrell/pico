@@ -13,8 +13,14 @@ void inputToBuffer(char character);
 
 char input;
 char top_of_buffer = 0;
-char input_buffer[25];
-
+char input_buffer[24];
+/*
+char *commandList[3]= 
+	{"hello",
+	 "why", 
+	 "die",
+	};
+*/
 
 int main(){
     //Initialise I/O
@@ -43,11 +49,19 @@ int main(){
     }
 }
 
-
-
-void getInput(){
-	scanf("%c", &input);
+void getCommand(char *buffer, int inputLength){
+	
+	strcmp (buffer, const char* str2);
+		
+}
+*/
+//can take a char from any source
+void getInput(char input){
 	charToBuffer(input);
+	if(input == "\n"){
+		getCommand(input_buffer, top_of_buffer);
+		flushBuffer();
+	}		
 }
 
 void inputToBuffer(char character){
