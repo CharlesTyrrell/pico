@@ -83,19 +83,19 @@ void getCommand(char *buffer, int inputLength){	//STUB
 //can take a char from any source
 void processInput(char input){
 	inputToBuffer(input);
-	if(input == "\n"){
+	if(input == '\n'){
 		getCommand(input_buffer, top_of_buffer);
 		flushBuffer();
 	}		
 }
 //-----------------
-void inputToBuffer(char character){
+void inputToBuffer(char input_char){
 	if(top_of_buffer >= sizeof(input_buffer)){
 		flushBuffer();
 		printf("buffer overflow \n");	
 	}
-	printf("%c", character);
-	input_buffer[top_of_buffer] = character;
+	printf("%c", input_char);
+	input_buffer[top_of_buffer] = input_char;
 	top_of_buffer++;	
 }
 //-------------
