@@ -26,7 +26,7 @@ int main(){
 			case 'a' :
 				turnOn();
 				break;
-			case 'b' ;
+			case 'b' :
 				turnOff();
 				break;
 			default :
