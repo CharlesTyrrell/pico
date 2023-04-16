@@ -8,12 +8,12 @@ void start();
 void turnOn();
 void turnOff();
 void flushBuffer();
-void processInput();
+void processInput(char input);
 void inputToBuffer(char character);
 void processEvents();
 
 
-char input;
+char userChar;
 char top_of_buffer = 0;
 char input_buffer[24];
 
@@ -30,8 +30,8 @@ int main(){
 	
     
     while(1){ //Main Loop 
-		scanf("%c", input);
-		processInput(input);
+		scanf("%c", &userChar);
+		processInput(userChar);
 			
 		
     }
@@ -82,7 +82,7 @@ void getCommand(char *buffer, int inputLength){	//STUB
 //--------------------
 //can take a char from any source
 void processInput(char input){
-	charToBuffer(input);
+	inputToBuffer(input);
 	if(input == "\n"){
 		getCommand(input_buffer, top_of_buffer);
 		flushBuffer();
@@ -91,7 +91,7 @@ void processInput(char input){
 //-----------------
 void inputToBuffer(char character){
 	if(top_of_buffer >= sizeof(input_buffer)){
-		flush_buffer();
+		flushBuffer();
 		printf("buffer overflow \n");	
 	}
 	printf("%c", character);
