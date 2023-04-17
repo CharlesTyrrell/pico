@@ -3,6 +3,7 @@
 void start();
 
 #include <stdio.h>
+#include <string.h>
 #include "pico/stdlib.h"
 
 void turnOn();
@@ -11,14 +12,37 @@ void flushBuffer();
 void inputChar(char input);
 void inputToBuffer(char character);
 void processEvents();
-
+void getCommand(char *buffer, int inputLength);
 
 char top_of_buffer = 0;
 char input_buffer[24];
 
+typedef void (*CommandFunc)(); //command pointers always use input for
+struct _command_ {
+	char *name;
+	CommandFunc func;
+	struct _commmand_ * nextCommand;
+} typedef CommandStruct;
+CommandStruct newCommand(char *name, CommandFunc func, struct _commmand_ *nextCommand)
+{
+	CommandStruct new_command;
+	new_command.name = name;
+	new_command.func = func;
+	new_command.nextCommand = nextCommand;
+	return new_command;
+}
+
+const int NUMCOMMANDS = 3;
+CommandStruct CommandList[3];
+
+
 
 int main(){
     
+	CommandList[0] = newCommand("turnOn", &turnOn, NULL);
+	CommandList[1] =  newCommand("turnOff", &turnOff, NULL);
+	
+	
     { //Initialise I/O
     stdio_init_all(); 
 	
@@ -39,31 +63,24 @@ int main(){
 }
 
 
-typedef void (*CommandFunc)(); //command pointers always use input for
-
-struct _command_ {
-	char *name;
-	CommandFunc func;
-	struct _commmand_ * nextCommand;
-} typedef CommandStruct;
-
-CommandStruct *newCommand(char *name, CommandFunc func);
-CommandStruct *CommandList = 0;
 
 
 
 
 
 void getCommand(char *buffer, int inputLength){	//STUB
-
-	/*
-	for(int = 0; i < sizeof(inputLength); i++)
-		if(strcmp (buffer, commandList[0])){
-				
+//int strcmp (const char* str1, const char* str2);
+	printf("buffer: %s||", buffer);
+	for(int i = 0; i < NUMCOMMANDS; i++){
+		printf("%s, %i", CommandList[i].name, strcmp(CommandList[i].name, buffer));
+		if(strcmp(CommandList[i].name, buffer) == 0){
+			CommandList[i].func();
+			break;
+		}else if(i == NUMCOMMANDS - 1){
+			printf("\nCommand Not Found\n");
 		}
-	*/	
+	}
 }
-
 
 void inputChar(char input_char){
 	
@@ -74,11 +91,13 @@ void inputChar(char input_char){
 			break;
 		case 13: //return
 			printf("\n");
+			input_buffer[top_of_buffer] = '\0';//forgot that this
+//character is for end of string, not \n
 			getCommand(input_buffer, top_of_buffer);
 			flushBuffer();
 			break;
 		default: //all else
-			printf("%c", input_char);
+			printf("%c", input_char); 
 			input_buffer[top_of_buffer] = input_char;
 			top_of_buffer++;	
 	}
@@ -87,7 +106,7 @@ void inputChar(char input_char){
 		flushBuffer();
 		printf(" buffer underflow \n");
 	}
-	else if(top_of_buffer >= (int)sizeof(input_buffer)){
+	else if(top_of_buffer >= (int)sizeof(input_buffer) - 1){
 		printf("%i", top_of_buffer);
 		flushBuffer();
 		printf("buffer overflow \n");	
