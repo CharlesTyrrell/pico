@@ -39,12 +39,19 @@ int main(){
 }
 
 
-typedef void (*CommandFunc)(); //command pointers always use input fo
+typedef void (*CommandFunc)(); //command pointers always use input for
 
 struct _command_ {
 	char *name;
 	CommandFunc func;
-};
+	struct _commmand_ * nextCommand;
+} typedef CommandStruct;
+
+CommandStruct *newCommand(char *name, CommandFunc func);
+CommandStruct *CommandList = 0;
+
+
+
 
 
 void getCommand(char *buffer, int inputLength){	//STUB
