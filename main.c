@@ -6,6 +6,7 @@ void start();
 #include <string.h>
 #include "pico/stdlib.h"
 
+void clearScreen();
 void turnOn();
 void turnOff();
 void flushBuffer();
@@ -18,6 +19,9 @@ char top_of_buffer = 0;
 char input_buffer[24];
 
 typedef void (*CommandFunc)(); //command pointers always use input for
+
+
+
 struct _command_ {
 	char *name;
 	CommandFunc func;
@@ -41,6 +45,7 @@ int main(){
     
 	CommandList[0] = newCommand("turnOn", &turnOn, NULL);
 	CommandList[1] =  newCommand("turnOff", &turnOff, NULL);
+	CommandList[2] =  newCommand("clearScreen", &clearScreen, NULL);
 	
 	
     { //Initialise I/O
@@ -70,13 +75,13 @@ int main(){
 
 void getCommand(char *buffer, int inputLength){	//STUB
 //int strcmp (const char* str1, const char* str2);
-	printf("buffer: %s||", buffer);
+	//printf("buffer: %s||", buffer);
 	for(int i = 0; i < NUMCOMMANDS; i++){
-		printf("%s, %i", CommandList[i].name, strcmp(CommandList[i].name, buffer));
+		//printf("%s, %i", CommandList[i].name, strcmp(CommandList[i].name, buffer));
 		if(strcmp(CommandList[i].name, buffer) == 0){
 			CommandList[i].func();
 			break;
-		}else if(i == NUMCOMMANDS - 1){
+		}else if(i == NUMCOMMANDS - 1 && inputLength > 1){
 			printf("\nCommand Not Found\n");
 		}
 	}
@@ -118,6 +123,12 @@ void flushBuffer(){
 	top_of_buffer = 0;
 }
 
+void clearScreen()
+{
+	char esc = 27;
+	printf(esc);
+	//printf('\033[2J');
+}
 
 void turnOn()
 {
@@ -199,4 +210,32 @@ struct _command_ *commandList[]=
 		
 	};
 */
+
+/*
+								_-o#&&*\'\'\'\'?d:>b\_\n
+						  _o/"`\'\'  \'\',, dMF9MMMMMHo_\n\
+					   .o&#\'        `\"MbHMMMMMMMMMMMHo.\n\
+					 .o\"\" \'         vodM*$&&HMMMMMMMMMM?.
+					,\'              $M&ood,~\'`(&##MMMMMMH\
+				   /               ,MMMMMMM#b?#bobMMMMHMMML
+				  &              ?MMMMMMMMMMMMMMMMM7MMM$R*Hk
+				 ?$.            :MMMMMMMMMMMMMMMMMMM/HMMM|`*L
+				|               |MMMMMMMMMMMMMMMMMMMMbMH'   T,
+				$H#:            `*MMMMMMMMMMMMMMMMMMMMb#}'  `?
+				]MMH#             ""*""""*#MMMMMMMMMMMMM'    -
+				MMMMMb_                   |MMMMMMMMMMMP'     :
+				HMMMMMMMHo                 `MMMMMMMMMT       .
+				?MMMMMMMMP                  9MMMMMMMM}       -
+				-?MMMMMMM                  |MMMMMMMMM?,d-    '
+				 :|MMMMMM-                 `MMMMMMMT .M|.   :
+				  .9MMM[                    &MMMMM*' `'    .
+				   :9MMk                    `MMM#"        -
+					 &M}                     `          .-
+					  `&.                             .
+						`~,   .                     ./
+							. _                  .-
+							  '`--._,dd###pp=""'" 
+ 
+ 
+ */
 
