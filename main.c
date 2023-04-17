@@ -39,6 +39,14 @@ int main(){
 }
 
 
+typedef void (*CommandFunc)(); //command pointers always use input fo
+
+struct _command_ {
+	char *name;
+	CommandFunc func;
+};
+
+
 void getCommand(char *buffer, int inputLength){	//STUB
 
 	/*
@@ -76,7 +84,6 @@ void inputChar(char input_char){
 		printf("%i", top_of_buffer);
 		flushBuffer();
 		printf("buffer overflow \n");	
-		
 	}
 }
 //-------------
@@ -98,6 +105,37 @@ void turnOff()
 	printf("LED OFF\n");
 	
 }
+
+
+/*
+#include <stdio.h>
+// A normal function with an int parameter
+// and void return type
+void fun(int a)
+{
+    printf("Value of a is %d\n", a);
+}
+  
+int main()
+{
+    // fun_ptr is a pointer to function fun() 
+    void (*fun_ptr)(int) = &fun;
+  
+     The above line is equivalent of following two
+       void (*fun_ptr)(int);
+       fun_ptr = &fun; 
+    
+  
+    // Invoking fun() using fun_ptr
+    (*fun_ptr)(10);
+  
+    return 0;
+}
+
+
+*/
+
+
 /*
 gpio_put(25, 1); // Set pin 25 to high
 printf("LED ON!\n");
