@@ -32,7 +32,7 @@ int main(){
     while(1){ //Main Loop 
 		scanf("%c", &userChar);
 		processInput(userChar);
-			
+		
 		
     }
 }
@@ -83,17 +83,22 @@ void getCommand(char *buffer, int inputLength){	//STUB
 //can take a char from any source
 void processInput(char input){
 	inputToBuffer(input);
-	if(input == '\n'){
+	if(input == '\n'){ 
 		getCommand(input_buffer, top_of_buffer);
 		flushBuffer();
+		printf('\n');
 	}		
 }
 //-----------------
 void inputToBuffer(char input_char){
+	//if(input_char > 256) //doesn't take any non-asccii characters
+	//	return;
 	if(top_of_buffer >= sizeof(input_buffer)){
 		flushBuffer();
 		printf("buffer overflow \n");	
 	}
+		
+	
 	printf("%c", input_char);
 	input_buffer[top_of_buffer] = input_char;
 	top_of_buffer++;	
