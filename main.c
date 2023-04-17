@@ -8,12 +8,11 @@ void start();
 void turnOn();
 void turnOff();
 void flushBuffer();
-void processInput(char input);
+void inputChar(char input);
 void inputToBuffer(char character);
 void processEvents();
 
 
-char userChar;
 char top_of_buffer = 0;
 char input_buffer[24];
 
@@ -29,9 +28,11 @@ int main(){
 	}	
 	
     
+	char userChar;
     while(1){ //Main Loop 
+		
 		scanf("%c", &userChar);
-		processInput(userChar);
+		inputChar(userChar);
 		
 		
     }
@@ -48,29 +49,35 @@ void getCommand(char *buffer, int inputLength){	//STUB
 	*/	
 }
 
-//--------------------
-//can take a char from any source
-void processInput(char input){
-	inputToBuffer(input);
-	if(input == 13){ 
-		getCommand(input_buffer, top_of_buffer);
+
+void inputChar(char input_char){
+	
+	switch(input_char){
+		case 8: //delete
+			printf("\b \b");
+			top_of_buffer--;
+			break;
+		case 13: //return
+			printf("\n");
+			getCommand(input_buffer, top_of_buffer);
+			flushBuffer();
+			break;
+		default: //all else
+			printf("%c", input_char);
+			input_buffer[top_of_buffer] = input_char;
+			top_of_buffer++;	
+	}
+	
+	if (top_of_buffer == 255){
 		flushBuffer();
-		printf("\n");
-	}		
-}
-//-----------------
-void inputToBuffer(char input_char){
-	//if(input_char > 256) //doesn't take any non-asccii characters
-	//	return;
-	if(top_of_buffer >= sizeof(input_buffer)){
+		printf(" buffer underflow \n");
+	}
+	else if(top_of_buffer >= (int)sizeof(input_buffer)){
+		printf("%i", top_of_buffer);
 		flushBuffer();
 		printf("buffer overflow \n");	
-	}
 		
-	
-	printf("%c", input_char);
-	input_buffer[top_of_buffer] = input_char;
-	top_of_buffer++;	
+	}
 }
 //-------------
 
